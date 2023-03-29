@@ -142,7 +142,7 @@ render() {
         'width': '100%',
         'height':'100%'
     };
-    const { src, root, poster, ratio } = this.props;
+    const { src, root, poster, ratio, onPlay } = this.props;
     const { Vid, show, currTime, mute, play } = this.state;
     return (
         <React.Fragment>
@@ -154,6 +154,7 @@ render() {
                 controls
                 src={src}
                 poster={poster}
+                onPlay={onPlay}
             />
             {show ? <Overlay /> : null}
             <Pop
@@ -182,5 +183,6 @@ VideoPop.propTypes = {
     poster: PropTypes.string,
     mute: PropTypes.bool,
     autoplay:PropTypes.bool,
-    ratio:PropTypes.object
+    ratio:PropTypes.object,
+    onPlay:PropTypes.func
 };
