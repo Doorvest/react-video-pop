@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Controls from './Controls';
+import _ from 'underscore';
 export default class Pop extends Component {
     state = {
         currtime: null,
@@ -47,6 +48,10 @@ export default class Pop extends Component {
         } else {
             node.muted = false;
         }
+        this.clientX = window.innerWidth - (300 + 10);
+        this.clientY = window.innerHeight - (300*(this.props.ratio.h/this.props.ratio.w) + 10);
+        this.start = { x: 0, y: 0 };
+        this.pos = this.state.pos;
         this.f, this.a, (this.v = { x: 0, y: 0 });
         this.fScale, this.aScale, (this.vScale = 0);
         this.renderAnimation();
@@ -61,6 +66,9 @@ export default class Pop extends Component {
 
     handleEventListener = () => {
         window.addEventListener('mousemove', this.handleMove);
+        window.addEventListener('resize', _.debounce((e) => {
+            this.handleMove(e);
+        }, 200));
         document.addEventListener('mouseleave', this.handleUp);
     };
 
@@ -339,11 +347,15 @@ export default class Pop extends Component {
 
     handleMove = e => {
         e.preventDefault();
-        if (this.state.isDown) {
+        if (this.state.isDown || e.type == 'resize') {
             let node = this.state.Pop.current;
+            if(e && e.clientX){
+                this.clientX = e.clientX;
+                this.clientY = e.clientY;
+            }
             let { width, height } = node.getBoundingClientRect();
-            let xdiff = -(this.start.x - e.clientX) + this.pos.x;
-            let ydiff = -(this.start.y - e.clientY) + this.pos.y;
+            let xdiff = -(this.start.x - this.clientX) + this.pos.x;
+            let ydiff = -(this.start.y - this.clientY) + this.pos.y;
             this.setState({
                 pos: {
                     x: xdiff,
@@ -351,8 +363,8 @@ export default class Pop extends Component {
                 }
             });
             if (
-                e.clientX >= window.innerWidth / 2 &&
-                e.clientY >= window.innerHeight / 2
+                this.clientX >= window.innerWidth / 2 &&
+                this.clientY >= window.innerHeight / 2
             ) {
                 this.setState({
                     rest: {
@@ -367,8 +379,8 @@ export default class Pop extends Component {
                     resizeCursor:'nwse-resize'
                 });
             } else if (
-                e.clientX >= window.innerWidth / 2 &&
-                e.clientY < window.innerHeight / 2
+                this.clientX >= window.innerWidth / 2 &&
+                this.clientY < window.innerHeight / 2
             ) {
                 this.setState({
                     rest: {
@@ -383,8 +395,8 @@ export default class Pop extends Component {
                     resizeCursor:'nesw-resize'
                 });
             } else if (
-                e.clientY >= window.innerHeight / 2 &&
-                e.clientX < window.innerWidth
+                this.clientY >= window.innerHeight / 2 &&
+                this.clientX < window.innerWidth
             ) {
                 this.setState({
                     rest: {
