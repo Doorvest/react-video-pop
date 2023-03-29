@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
@@ -494,50 +495,49 @@ export default class Pop extends Component {
         requestAnimationFrame(this.renderAnimation);
     };
 
-    checkUpdate=(props,state)=>{
-        let node = state.Pop.current;
-        if (props.currtime !== state.currtime) {
-            node.currentTime = props.currtime;
+    componentDidUpdate=(prevProps)=>{
+        let node = this.state.Pop.current;
+        if (prevProps.currtime !== this.props.currtime) {
+            node.currentTime = this.props.currtime;
             node.play();
             this.setState({
-                currtime: props.currtime,
-                show: props.Show
+                currtime: this.props.currtime,
+                show: this.props.Show
             }) ;
-        } else if (props.Show !== state.show) {
+        } else if (prevProps.Show !== this.props.Show) {
             node.pause();
             this.setState({
-                show: props.Show
+                show: this.props.Show
             });
-        } else if (props.mute !== state.mute) {
-            if (props.mute) {
+        } else if (prevProps.mute !== this.props.mute) {
+            if (this.props.mute) {
                 node.muted = true;
                 this.setState({
-                    mute: props.mute
+                    mute: this.props.mute
                 });
             } else {
                 node.muted = false;
                 this.setState({
-                    mute: props.mute
+                    mute: this.props.mute
                 });
             }
         } 
-        else if (props.play !== state.play) {
-            if (props.play) {
+        else if (prevProps.play !== this.props.play) {
+            if (this.props.play) {
                 node.play();
                 this.setState({
-                    play: props.play
+                    play: this.props.play
                 });
             } else {
                 node.pause();
                 this.setState({
-                    play: props.play
+                    play: this.props.play
                 });
             }
         }
     }
 
     render() {
-        this.checkUpdate(this.props,this.state);
         const {resizeCursor} = this.state;
         const root = document.getElementById(this.props.root);
         const style = {
