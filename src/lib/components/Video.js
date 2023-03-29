@@ -14,9 +14,9 @@ state = {
 };
 
 static defaultProps = {
-    Src: null,
+    src: null,
     root: null,
-    Poster: null,
+    poster: null,
     mute: false,
     autoplay:true
 };
@@ -142,7 +142,7 @@ render() {
         'width': '100%',
         'height':'100%'
     };
-    const { Src, root, Poster, ratio } = this.props;
+    const { src, root, poster, ratio } = this.props;
     const { Vid, show, currTime, mute, play } = this.state;
     return (
         <React.Fragment>
@@ -152,12 +152,12 @@ render() {
                 id="video-pop"
                 className="choose"
                 controls
-                src={Src}
-                poster={Poster}
+                src={src}
+                poster={poster}
             />
             {show ? <Overlay /> : null}
             <Pop
-                src={Src}
+                src={src}
                 root={root}
                 Show={show}
                 currtime={currTime}
@@ -177,9 +177,9 @@ render() {
 export default VideoPop;
 
 VideoPop.propTypes = {
-    Src: PropTypes.string,
+    src: PropTypes.string,
     root: PropTypes.string,
-    Poster: PropTypes.string,
+    poster: PropTypes.string,
     mute: PropTypes.bool,
     autoplay:PropTypes.bool,
     ratio:PropTypes.object

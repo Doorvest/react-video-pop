@@ -58,7 +58,7 @@ const Message = styled.div`
 const Comp = ()=>{
     return(
         <div>
-            <VideoPop Src={Scene} mute={true} autoplay={false} root="video-root" ratio={{w:16,h:9}} />
+            <VideoPop src={Scene} mute={true} autoplay={true} root="video-root" ratio={{w:16,h:9}} />
         </div>
     );
 };
